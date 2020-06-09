@@ -76,21 +76,28 @@
 
 ### 환경
 
-- Runtime : Python >= 3.7 이상 (f-string 사용)
+* Runtime : Python >= 3.7 이상 (f-string 사용)
 
 ### 요구사항
--  다음과 같은 log\_format을 지원해야, 사용이 가능함. </br>
-`$remote_addr - $remote_user [$request_time] "$method $uri $http_version" $status $body_bytes_sent "$http_referer" "$http_user_agent"`
-- 대상 S3 Bucket에 READ/WRITE 권한 필요
 
+* 다음과 같은 log\_format을 지원해야, 사용이 가능함.
+`$remote_addr - $remote_user [$request_time] "$method $uri $http_version" $status $body_bytes_sent "$http_referer" "$http_user_agent"`
+* 대상 S3 Bucket에 READ/WRITE 권한 필요
+
+### 옵션 값
+
+OS 환경 변수를 통해 코드 수정 없이 조정 가능한 값들에 대해 정의 합니다.
+
+| key | 설명 | 기본값 |
+| --- | --- | --- |
+| S3\_BUCKET\_NAME | 저장될 S3 Bucket 이름 | KAKAOBANK\_LOG |
+| S3\_SAVE\_PREFIX | LOG 파일 저장시 PREFIX로 지정되는 값 | nginx/v1-logs |
 
 ### 처리방식
 
 * INPUT 된 데이터에 대해 정규식 파싱 진행
 * 파싱된 데이터를 기반으로 JSON 데이터 생성
 * Multiline JSON 형태로 s3에 object 저장
-
-
 
 ### 데이터
 
@@ -143,8 +150,8 @@
 
 #### 특징
 
--  `Athena` 등의 데이터 분석 솔루션 사용시, 효율적인 데이터 호출 및 분석을 위하여, 시계열 기반 Object Key 전략 사용
--  스키마 변경 발생을 대비하여, 분기가 가능한 경로 추가
+* `Athena` 등의 데이터 분석 솔루션 사용시, 효율적인 데이터 호출 및 분석을 위하여, 시계열 기반 Object Key 전략 사용
+* 스키마 변경 발생을 대비하여, 분기가 가능한 경로 추가
 
 ## LocalStack 환경 구성
 
@@ -177,10 +184,11 @@ docker-compose -f ./localstack/docker-compose.yml up -d
 | 서비스명 | endpoint url | 비고 |
 | ---- | ------------ | --- |
 | s3 | [http://localhost:4572](http://localhost:4572) | - |
-| Kinesis  | [http://localhost:4568](http://localhost:4568) |  |
+| Kinesis | [http://localhost:4568](http://localhost:4568) |  |
 | Lambda | [http://localhost:4574](http://localhost:4574) | - |
 
 ### Referesnse
+
 * [https://github.com/localstack/localstack](https://github.com/localstack/localstack)
 * [https://woowabros.github.io/tools/2019/07/18/localstack-integration.html](https://woowabros.github.io/tools/2019/07/18/localstack-integration.html)
 * [https://docs.aws.amazon.com/ko\_kr/cli/latest/userguide/cli-configure-options.html](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-options.html)
